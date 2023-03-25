@@ -1,8 +1,7 @@
-﻿namespace Valhalla.Domain.Partner.Fields
+﻿namespace Valhalla.Domain.Partner.Fields;
+
+public enum PartnerState
 {
-    public enum PartnerState
-    {
-        Inactive = 0,
-        Active = 1
-    }
+    Inactive = 0,
+    Active = 1
 }

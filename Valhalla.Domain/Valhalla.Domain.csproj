@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Okala.Core.Abstraction" Version="1.5.5" />
-        <PackageReference Include="Okala.Core.Domain" Version="1.5.2" />
-        <PackageReference Include="Okala.Core.Domain.Event.MediatR" Version="1.5.1" />
-        <PackageReference Include="Okala.Core.Common" Version="1.5.3" />
+        <PackageReference Include="Okala.Core.Abstraction" Version="1.5.5"/>
+        <PackageReference Include="Okala.Core.Domain" Version="1.5.2"/>
+        <PackageReference Include="Okala.Core.Domain.Event.MediatR" Version="1.5.1"/>
+        <PackageReference Include="Okala.Core.Common" Version="1.5.3"/>
     </ItemGroup>
 </Project>

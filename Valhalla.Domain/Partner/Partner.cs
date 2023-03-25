@@ -25,7 +25,7 @@ public class Partners : Entity<long>, IAggregateRoot
     public PartnerState PartnerState { get; private set; }
     public string Email { get; private set; }
     public string EconomicalCode { get; private set; }
-    public string RegistrationRejectReason { get; private set; } = string.Empty;
+    public string RegistrationRejectReason { get; } = string.Empty;
     public long IdentityId { get; private set; }
     public long CityId { get; set; }
     public string CityName { get; set; }
@@ -90,7 +90,6 @@ public class Partners : Entity<long>, IAggregateRoot
     {
         IdentityId = identityId;
     }
-
 
     #endregion
 }
