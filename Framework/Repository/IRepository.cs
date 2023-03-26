@@ -1,20 +1,24 @@
-﻿using Framework.Transactions;
+﻿using System.Linq.Expressions;
+using Framework.Transactions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Repository;
 
-public interface IRepository : IDisposable
+public interface IRepository<W_DbContext, TEntity, U_PrimaryKey>
+    where W_DbContext : DbContext
+    where TEntity : class
 {
-    Task SaveChanges(CancellationToken cancellationToken = default);
-    public ITransaction BeginTransaction();
-}
+    Task<TEntity> Select(U_PrimaryKey id);
+    Task<IEnumerable<TEntity>> Select();
 
-public interface IRepository<TEntity> :IRepository where TEntity : class
-{
+    Task<IEnumerable<TEntity>> Select(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
     Task Update(TEntity entity);
     Task Insert(TEntity entity);
     Task InsertRange(IEnumerable<TEntity> entities);
-    Task Delete(long id);
+    Task Delete(U_PrimaryKey id);
     Task Delete(TEntity entity);
     Task DeleteRange(IEnumerable<TEntity> entities);
 }

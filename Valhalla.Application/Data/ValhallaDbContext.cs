@@ -7,6 +7,10 @@ public class ValhallaDbContext : DbContext
 {
     public const string DefaultSchema = "Valhalla";
 
+    public ValhallaDbContext()
+    {
+        
+    }
     public ValhallaDbContext(DbContextOptions options) : base(options)
     {
     }

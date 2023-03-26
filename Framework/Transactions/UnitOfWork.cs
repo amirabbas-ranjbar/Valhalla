@@ -1,55 +1,25 @@
-﻿
-using Framework.Objects;
-using Framework.Repository;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Transactions;
-public class UnitOfWork : Disposable, IUnitOfWork
+
+public class UnitOfWork<W_DbContext> : IUnitOfWork
+    where W_DbContext : DbContext
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly Dictionary<string, Tuple<IRepository, object>> _repositories;
+    private readonly W_DbContext _context;
 
-    public UnitOfWork(IServiceProvider serviceProvider)
+    public UnitOfWork(W_DbContext context)
     {
-        _serviceProvider = serviceProvider;
-        _repositories = new Dictionary<string, Tuple<IRepository,object>>();
+        _context = context;
     }
 
-    protected override void Dispose(bool disposing)
+
+    public async Task<int> SaveChanges()
     {
-        if (!Disposed && disposing)
-        {
-            foreach (var repository in _repositories)
-            {
-                repository.Value.Item1.Dispose();
-            }
-        }
-        base.Dispose(disposing);
+        return await _context.SaveChangesAsync();
     }
 
-    public async Task SaveChanges(CancellationToken cancellationToken = default)
+    public void Dispose()
     {
-        foreach (var repository in _repositories)
-        {
-            await repository.Value.Item1.SaveChanges(cancellationToken);
-        }
-    }
-    public IRepository<T> GetRepository<T>() where T : class
-    {
-        var typeName = typeof(T).FullName;
-        if (_repositories.TryGetValue(typeName!, out var repository))
-        {
-            return (IRepository<T>)repository.Item2;
-        }
-
-        var obj = _serviceProvider.GetService<IRepository<T>>();
-        _repositories.Add(typeName, new Tuple<IRepository, object>(obj, obj));
-        return obj;
-    }
-
-    public ITransaction BeginTransaction()
-    {
-        var trans = new UnitOfWorkDbTransaction(_repositories.Select(c => c.Value.Item1));
-        return new UnitOfWorkAtomicTransaction(trans);
+        _context.Dispose();
     }
 }
