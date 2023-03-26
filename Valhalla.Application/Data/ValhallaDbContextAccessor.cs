@@ -7,8 +7,8 @@ namespace Valhalla.Application.Data;
 
 public class ValhallaDbContextAccessor : UnitOfWork<ValhallaDbContext>
 {
-    public ValhallaDbContextAccessor(IRepository<Partners> partnerRepository)
-        : this(new ValhallaDbContext())
+    public ValhallaDbContextAccessor(ValhallaDbContext context, IRepository<Partners> partnerRepository)
+        : this(context)
     {
         PartnerRepository = partnerRepository;
     }
